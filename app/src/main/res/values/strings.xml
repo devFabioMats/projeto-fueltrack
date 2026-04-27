@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">FuelTrack</string>
+
+    <string name="welcome_title">FuelTrack</string>
+    <string name="welcome_description">Controle seus abastecimentos e acompanhe seus custos com praticidade.</string>
+    <string name="start_now">Começar agora</string>
+
+    <string name="home_title">Tela inicial</string>
+    <string name="home_description">Escolha uma opção para gerenciar seus abastecimentos.</string>
+    <string name="new_fueling">Novo abastecimento</string>
+    <string name="view_history">Ver histórico</string>
+
+    <string name="fuel_entry_title">Registrar abastecimento</string>
+    <string name="hint_date">Data (dd/mm/aaaa)</string>
+    <string name="hint_vehicle">Veículo</string>
+    <string name="hint_odometer">Quilometragem atual</string>
+    <string name="hint_liters">Litros abastecidos</string>
+    <string name="hint_total_cost">Valor total (R$)</string>
+    <string name="save_fueling">Salvar abastecimento</string>
+    <string name="fueling_saved_message">Abastecimento salvo (simulação).</string>
+
+    <string name="history_title">Histórico de abastecimentos</string>
+    <string name="history_placeholder">Nenhum abastecimento registrado ainda.</string>
+</resources>
