@@ -1,21 +1,25 @@
 # FuelTrack
 
-Entrega parcial 1 da disciplina de desenvolvimento mobile.
+Entregas parciais da disciplina de desenvolvimento mobile.
 
 ## Escopo implementado
 
 - Estrutura inicial de pacotes (`ui`, `model`, `data`)
 - Telas iniciais em portugues
 - Navegacao basica entre telas
+- Persistencia local com Room
+- Cadastro de abastecimento com validacao
+- Historico com lista real de abastecimentos
 
 ## Estrutura principal
 
 - `app/src/main/java/com/example/fueltrack/MainActivity.java`: tela de boas-vindas (launcher)
 - `app/src/main/java/com/example/fueltrack/ui/home/HomeActivity.java`: menu inicial
 - `app/src/main/java/com/example/fueltrack/ui/fuel/FuelEntryActivity.java`: formulario de abastecimento
-- `app/src/main/java/com/example/fueltrack/ui/history/HistoryActivity.java`: historico simples
-- `app/src/main/java/com/example/fueltrack/model/FuelRecord.java`: modelo de abastecimento
-- `app/src/main/java/com/example/fueltrack/data/MockFuelDataSource.java`: dados mockados
+- `app/src/main/java/com/example/fueltrack/ui/history/HistoryActivity.java`: historico com lista
+- `app/src/main/java/com/example/fueltrack/model/FuelRecord.java`: entidade Room
+- `app/src/main/java/com/example/fueltrack/data/FuelRepository.java`: acesso a dados
+- `app/src/main/java/com/example/fueltrack/data/local/AppDatabase.java`: base local
 
 ## Fluxo de navegacao
 
