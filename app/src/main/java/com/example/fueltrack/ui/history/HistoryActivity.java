@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.app.AlertDialog;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +32,26 @@ public class HistoryActivity extends AppCompatActivity {
 
         FuelRepository repository = FuelRepository.getInstance(this);
         loadRecords(repository, adapter, textHistoryEmpty);
+
+        adapter.setOnItemClickListener(record -> {
+            Intent intent = new Intent(HistoryActivity.this, FuelEntryActivity.class);
+            intent.putExtra("record_id", record.getId());
+            startActivity(intent);
+        });
+
+        adapter.setOnItemLongClickListener(record -> {
+            new AlertDialog.Builder(HistoryActivity.this)
+                .setTitle(R.string.delete_confirm_title)
+                .setMessage(R.string.delete_confirm_message)
+                .setPositiveButton(android.R.string.yes, (dlg, which) -> {
+                    repository.deleteRecordById(record.getId(), () -> {
+                        Toast.makeText(HistoryActivity.this, R.string.deleted_message, Toast.LENGTH_SHORT).show();
+                        loadRecords(repository, adapter, textHistoryEmpty);
+                    });
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+        });
 
         buttonAddFromHistory.setOnClickListener(v -> {
             Intent intent = new Intent(HistoryActivity.this, FuelEntryActivity.class);

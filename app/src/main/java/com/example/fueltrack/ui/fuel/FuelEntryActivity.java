@@ -13,6 +13,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import com.example.fueltrack.R;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+
 public class FuelEntryActivity extends AppCompatActivity {
 
     @Override
@@ -32,9 +35,29 @@ public class FuelEntryActivity extends AppCompatActivity {
         TextInputEditText inputLiters = findViewById(R.id.input_liters);
         TextInputEditText inputTotalCost = findViewById(R.id.input_total_cost);
 
+        applyDateMask(inputDate);
+
         FuelEntryValidator validator = new FuelEntryValidator();
         FuelRepository repository = FuelRepository.getInstance(this);
         Button buttonSaveFueling = findViewById(R.id.button_save_fueling);
+
+        // Edit mode: if an existing record id is passed, preload fields and update on save
+        long editingId = getIntent().getLongExtra("record_id", 0L);
+        final boolean[] isEditMode = {false};
+        if (editingId > 0L) {
+            isEditMode[0] = true;
+            buttonSaveFueling.setText(R.string.update_fueling);
+            repository.getRecordById(editingId, record -> {
+                if (record != null) {
+                    inputDate.setText(record.getDate());
+                    inputVehicle.setText(record.getVehicle());
+                    inputOdometer.setText(String.valueOf(record.getOdometer()));
+                    inputLiters.setText(String.valueOf(record.getLiters()));
+                    inputTotalCost.setText(String.valueOf(record.getTotalCost()));
+                }
+            });
+        }
+
         buttonSaveFueling.setOnClickListener(v -> {
             clearErrors(layoutDate, layoutVehicle, layoutOdometer, layoutLiters, layoutTotalCost);
 
@@ -56,18 +79,34 @@ public class FuelEntryActivity extends AppCompatActivity {
                 return;
             }
 
-            FuelRecord record = new FuelRecord(
-                getText(inputDate),
-                getText(inputVehicle),
-                result.getOdometer(),
-                result.getLiters(),
-                result.getTotalCost()
-            );
+            if (isEditMode[0] && editingId > 0L) {
+                FuelRecord record = new FuelRecord(
+                    editingId,
+                    getText(inputDate),
+                    getText(inputVehicle),
+                    result.getOdometer(),
+                    result.getLiters(),
+                    result.getTotalCost(),
+                    System.currentTimeMillis()
+                );
+                repository.updateRecord(record, () -> {
+                    Toast.makeText(this, getString(R.string.fueling_updated_message), Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            } else {
+                FuelRecord record = new FuelRecord(
+                    getText(inputDate),
+                    getText(inputVehicle),
+                    result.getOdometer(),
+                    result.getLiters(),
+                    result.getTotalCost()
+                );
 
-            repository.saveRecord(record, () -> {
-                Toast.makeText(this, getString(R.string.fueling_saved_message), Toast.LENGTH_SHORT).show();
-                finish();
-            });
+                repository.saveRecord(record, () -> {
+                    Toast.makeText(this, getString(R.string.fueling_saved_message), Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            }
         });
     }
 
@@ -101,5 +140,42 @@ public class FuelEntryActivity extends AppCompatActivity {
     private String getText(TextInputEditText editText) {
         return editText.getText() == null ? "" : editText.getText().toString();
     }
-}
 
+    private void applyDateMask(TextInputEditText inputDate) {
+        inputDate.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // no-op
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // no-op
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (isUpdating) {
+                    return;
+                }
+                isUpdating = true;
+                String digits = editable.toString().replaceAll("\\D", "");
+                if (digits.length() > 8) {
+                    digits = digits.substring(0, 8);
+                }
+                StringBuilder formatted = new StringBuilder();
+                for (int i = 0; i < digits.length(); i++) {
+                    if (i == 2 || i == 4) {
+                        formatted.append('/');
+                    }
+                    formatted.append(digits.charAt(i));
+                }
+                inputDate.setText(formatted.toString());
+                inputDate.setSelection(formatted.length());
+                isUpdating = false;
+            }
+        });
+    }
+}

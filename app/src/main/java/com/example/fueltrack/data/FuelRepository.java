@@ -18,8 +18,16 @@ public class FuelRepository {
         void onLoaded(List<FuelRecord> records);
     }
 
+    public interface RecordCallback {
+        void onLoaded(FuelRecord record);
+    }
+
     public interface SaveCallback {
         void onSaved();
+    }
+
+    public interface DeleteCallback {
+        void onDeleted();
     }
 
     private static volatile FuelRepository instance;
@@ -49,6 +57,42 @@ public class FuelRepository {
             fuelRecordDao.insert(record);
             if (callback != null) {
                 mainHandler.post(callback::onSaved);
+            }
+        });
+    }
+
+    public void updateRecord(FuelRecord record, SaveCallback callback) {
+        executor.execute(() -> {
+            fuelRecordDao.update(record);
+            if (callback != null) {
+                mainHandler.post(callback::onSaved);
+            }
+        });
+    }
+
+    public void deleteRecord(FuelRecord record, DeleteCallback callback) {
+        executor.execute(() -> {
+            fuelRecordDao.delete(record);
+            if (callback != null) {
+                mainHandler.post(callback::onDeleted);
+            }
+        });
+    }
+
+    public void deleteRecordById(long id, DeleteCallback callback) {
+        executor.execute(() -> {
+            fuelRecordDao.deleteById(id);
+            if (callback != null) {
+                mainHandler.post(callback::onDeleted);
+            }
+        });
+    }
+
+    public void getRecordById(long id, RecordCallback callback) {
+        executor.execute(() -> {
+            FuelRecord record = fuelRecordDao.getById(id);
+            if (callback != null) {
+                mainHandler.post(() -> callback.onLoaded(record));
             }
         });
     }

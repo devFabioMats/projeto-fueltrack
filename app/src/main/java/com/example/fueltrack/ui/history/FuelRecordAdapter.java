@@ -17,6 +17,8 @@ import java.util.List;
 public class FuelRecordAdapter extends RecyclerView.Adapter<FuelRecordAdapter.RecordViewHolder> {
 
     private final List<FuelRecord> records = new ArrayList<>();
+    private OnItemClickListener clickListener;
+    private OnItemLongClickListener longClickListener;
 
     public void submitList(List<FuelRecord> items) {
         records.clear();
@@ -24,6 +26,14 @@ public class FuelRecordAdapter extends RecyclerView.Adapter<FuelRecordAdapter.Re
             records.addAll(items);
         }
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListener = listener;
     }
 
     @NonNull
@@ -38,6 +48,16 @@ public class FuelRecordAdapter extends RecyclerView.Adapter<FuelRecordAdapter.Re
     public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
         FuelRecord record = records.get(position);
         holder.bind(record);
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) clickListener.onItemClick(record);
+        });
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onItemLongClick(record);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
@@ -78,6 +98,14 @@ public class FuelRecordAdapter extends RecyclerView.Adapter<FuelRecordAdapter.Re
                 record.getTotalCost()
             ));
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(FuelRecord record);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(FuelRecord record);
     }
 }
 

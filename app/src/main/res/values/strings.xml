@@ -17,7 +17,9 @@
     <string name="hint_liters">Litros abastecidos</string>
     <string name="hint_total_cost">Valor total (R$)</string>
     <string name="save_fueling">Salvar abastecimento</string>
+    <string name="update_fueling">Atualizar abastecimento</string>
     <string name="fueling_saved_message">Abastecimento salvo.</string>
+    <string name="fueling_updated_message">Abastecimento atualizado.</string>
     <string name="fuel_entry_invalid_message">Confira os campos obrigatórios.</string>
     <string name="error_required_field">Campo obrigatório.</string>
     <string name="error_invalid_number">Informe um número válido.</string>
@@ -30,4 +32,7 @@
     <string name="history_item_odometer">Quilometragem: %1$d km</string>
     <string name="history_item_liters">Litros: %1$.2f L</string>
     <string name="history_item_total_cost">Total: R$ %1$.2f</string>
+    <string name="delete_confirm_title">Excluir abastecimento</string>
+    <string name="delete_confirm_message">Deseja excluir este registro? Esta ação não pode ser desfeita.</string>
+    <string name="deleted_message">Registro excluído.</string>
 </resources>
