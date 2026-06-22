@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Outer Drop/Flame shape -->
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M12,2c-5.33,4.55 -8,8.48 -8,11.8c0,4.98 3.8,8.2 8,8.2s8,-3.22 8,-8.2c0,-3.32 -2.67,-7.25 -8,-11.8z" />
+    <!-- Inner contrast shape (Gas pump nozzle hint) -->
+    <path
+        android:fillColor="#4DFFFFFF"
+        android:pathData="M12,18c-2.21,0 -4,-1.79 -4,-4s4,-6 4,-6s4,3.79 4,6s-1.79,4 -4,4z" />
+    <!-- Bolt/Lightning hint for energy/fuel -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M13,10h-3l2,-5h3l-2,5zM11,14h3l-2,5h-3l2,-5z" />
+</vector>

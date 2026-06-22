@@ -1,5 +1,6 @@
 package com.example.fueltrack.ui.fuel;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,8 +14,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import com.example.fueltrack.R;
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class FuelEntryActivity extends AppCompatActivity {
 
@@ -35,7 +36,8 @@ public class FuelEntryActivity extends AppCompatActivity {
         TextInputEditText inputLiters = findViewById(R.id.input_liters);
         TextInputEditText inputTotalCost = findViewById(R.id.input_total_cost);
 
-        applyDateMask(inputDate);
+        inputDate.setFocusable(false);
+        inputDate.setOnClickListener(v -> showDatePicker(inputDate));
 
         FuelEntryValidator validator = new FuelEntryValidator();
         FuelRepository repository = FuelRepository.getInstance(this);
@@ -110,6 +112,20 @@ public class FuelEntryActivity extends AppCompatActivity {
         });
     }
 
+    private void showDatePicker(TextInputEditText inputDate) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year1, month1, dayOfMonth) -> {
+            String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, month1 + 1, year1);
+            inputDate.setText(formattedDate);
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
     private void clearErrors(TextInputLayout... layouts) {
         for (TextInputLayout layout : layouts) {
             layout.setError(null);
@@ -139,43 +155,5 @@ public class FuelEntryActivity extends AppCompatActivity {
 
     private String getText(TextInputEditText editText) {
         return editText.getText() == null ? "" : editText.getText().toString();
-    }
-
-    private void applyDateMask(TextInputEditText inputDate) {
-        inputDate.addTextChangedListener(new TextWatcher() {
-            private boolean isUpdating;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // no-op
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // no-op
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (isUpdating) {
-                    return;
-                }
-                isUpdating = true;
-                String digits = editable.toString().replaceAll("\\D", "");
-                if (digits.length() > 8) {
-                    digits = digits.substring(0, 8);
-                }
-                StringBuilder formatted = new StringBuilder();
-                for (int i = 0; i < digits.length(); i++) {
-                    if (i == 2 || i == 4) {
-                        formatted.append('/');
-                    }
-                    formatted.append(digits.charAt(i));
-                }
-                inputDate.setText(formatted.toString());
-                inputDate.setSelection(formatted.length());
-                isUpdating = false;
-            }
-        });
     }
 }

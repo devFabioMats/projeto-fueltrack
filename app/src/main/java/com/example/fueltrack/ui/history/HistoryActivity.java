@@ -2,7 +2,6 @@ package com.example.fueltrack.ui.history;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.widget.Toast;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fueltrack.R;
 import com.example.fueltrack.data.FuelRepository;
 import com.example.fueltrack.ui.fuel.FuelEntryActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         TextView textHistoryEmpty = findViewById(R.id.text_history_empty);
         RecyclerView recyclerHistory = findViewById(R.id.recycler_history);
-        Button buttonAddFromHistory = findViewById(R.id.button_add_from_history);
+        FloatingActionButton buttonAddFromHistory = findViewById(R.id.button_add_from_history);
 
         FuelRecordAdapter adapter = new FuelRecordAdapter();
         recyclerHistory.setLayoutManager(new LinearLayoutManager(this));
