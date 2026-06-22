@@ -38,6 +38,11 @@ Projeto prático desenvolvido para a disciplina de Desenvolvimento Mobile. O Fue
     - FAB: **Novo Registro**
 4. **Cadastro/Edição** (`FuelEntryActivity`) -> Salvar alterações e retornar.
 
+## Demonstração em Vídeo
+
+Assista à demonstração das funcionalidades do FuelTrack no link abaixo:
+- [Vídeo de Demonstração - FuelTrack](URL_DO_VIDEO_AQUI)
+
 ## Observação
 
 Para executar build/testes localmente, garanta que `JAVA_HOME` esteja configurado corretamente para o Java 17 ou superior.
